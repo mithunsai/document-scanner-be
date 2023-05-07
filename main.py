@@ -1,10 +1,11 @@
 from fastapi import FastAPI,  UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse,Response
 from pdf_converter import convert_to_pdf
 import os
 from starlette.background import BackgroundTask
+import base64
 
 app = FastAPI()
 
@@ -29,9 +30,13 @@ def deleteFile(pdfFileName):
 @app.post("/uploadImages/")
 async def uploadImages(imageFiles: List[UploadFile]):
     pdfFileName= await convert_to_pdf(imageFiles)
-    return FileResponse(
-        f'{pdfFileName}.pdf', background=BackgroundTask(deleteFile, pdfFileName)
-    )
+    with open(f'{pdfFileName}.pdf','rb') as pdfFile:
+        base64string= base64.b64encode(pdfFile.read())
+    # return base64string
+    # return FileResponse(
+    #     f'{pdfFileName}.pdf', background=BackgroundTask(deleteFile, pdfFileName), media_type="application/pdf"
+    # )
+    return Response(content=base64string,media_type="application/pdf",background=BackgroundTask(deleteFile, pdfFileName))
     
     
 
