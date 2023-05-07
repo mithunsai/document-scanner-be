@@ -1,9 +1,10 @@
 from fastapi import FastAPI,  UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-import cv2
-import numpy as np
-
+from fastapi.responses import FileResponse
+from pdf_converter import convert_to_pdf
+import os
+from starlette.background import BackgroundTask
 
 app = FastAPI()
 
@@ -21,16 +22,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def deleteFile(pdfFileName):
+    os.remove(f'{pdfFileName}.pdf')
+    
+    
 @app.post("/uploadImages/")
 async def uploadImages(imageFiles: List[UploadFile]):
-    images= []
-    for imageFile in imageFiles:
-        content = await imageFile.read()
-        nparray = np.fromstring(content, np.uint8)
-        image = cv2.imdecode(nparray, cv2.IMREAD_COLOR)
-        images.append(image)
-    
-    return {"filenames": [imageFile.filename for imageFile in imageFiles]}
+    pdfFileName= await convert_to_pdf(imageFiles)
+    return FileResponse(
+        f'{pdfFileName}.pdf', background=BackgroundTask(deleteFile, pdfFileName)
+    )
     
     
 
