@@ -164,8 +164,7 @@ def img_to_pdf(img_list):
     im1 = img_list[0]
     fileName= uuid.uuid4()
     if len(img_list) > 1:
-        im1.save(f'{fileName}.pdf', save_all=True,append_images=img_list[1:])
-        print('hi')                
+        im1.save(f'{fileName}.pdf', save_all=True,append_images=img_list[1:])               
     else:
         im1.save(f'{fileName}.pdf')
         
