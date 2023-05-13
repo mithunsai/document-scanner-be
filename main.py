@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "*"
+    "https://document-scanner-be.onrender.com/"
 ]
 
 
