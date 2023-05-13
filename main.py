@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "https://document-scanner-be.onrender.com/"
+    "https://main--glistening-fudge-6e3147.netlify.app/"
 ]
 
 
