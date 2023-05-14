@@ -4,4 +4,5 @@ opencv_python
 Pillow
 starlette
 uvicorn
+guvicorn
 python-multipart
