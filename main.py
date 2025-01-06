@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "https://main--glistening-fudge-6e3147.netlify.app"
+    "https://glistening-fudge-6e3147.netlify.app",
 ]
 
 
